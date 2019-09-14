@@ -24,6 +24,8 @@ import {
 
 import { VIRO_API_KEY } from 'react-native-dotenv';
 
+import axios from 'react-native-axios'; 
+
 /*
  TODO: Insert your API key below
  */
@@ -36,7 +38,7 @@ var InitialARScene = require('./js/HelloWorldSceneAR');
 var InitialVRScene = require('./js/HelloWorldScene');
 
 var UNSET = "UNSET";
-var VR_NAVIGATOR_TYPE = "VR";
+var AXIOS_TEST = "AXIOS";
 var AR_NAVIGATOR_TYPE = "AR";
 
 // This determines which type of experience to launch in, or UNSET, if the user should
@@ -48,8 +50,9 @@ export default class ViroSample extends Component {
     super();
 
     this.state = {
-      navigatorType : defaultNavigatorType,
-      sharedProps : sharedProps
+      testMessage: "...",
+      navigatorType: defaultNavigatorType,
+      sharedProps: sharedProps
     }
     this._getExperienceSelector = this._getExperienceSelector.bind(this);
     this._getARNavigator = this._getARNavigator.bind(this);
@@ -63,8 +66,6 @@ export default class ViroSample extends Component {
   render() {
     if (this.state.navigatorType == UNSET) {
       return this._getExperienceSelector();
-    } else if (this.state.navigatorType == VR_NAVIGATOR_TYPE) {
-      return this._getVRNavigator();
     } else if (this.state.navigatorType == AR_NAVIGATOR_TYPE) {
       return this._getARNavigator();
     }
@@ -80,6 +81,10 @@ export default class ViroSample extends Component {
             Choose your desired experience:
           </Text>
 
+          <Text style={localStyles.titleText}>
+            {this.state.testMessage}
+          </Text>
+
           <TouchableHighlight style={localStyles.buttons}
             onPress={this._getExperienceButtonOnPress(AR_NAVIGATOR_TYPE)}
             underlayColor={'#68a0ff'} >
@@ -88,10 +93,10 @@ export default class ViroSample extends Component {
           </TouchableHighlight>
 
           <TouchableHighlight style={localStyles.buttons}
-            onPress={this._getExperienceButtonOnPress(VR_NAVIGATOR_TYPE)}
+            onPress={this._getExperienceButtonOnPress(AXIOS_TEST)}
             underlayColor={'#68a0ff'} >
 
-            <Text style={localStyles.buttonText}>VR</Text>
+            <Text style={localStyles.buttonText}>Test Axios</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -118,9 +123,22 @@ export default class ViroSample extends Component {
   // by the experience selector buttons
   _getExperienceButtonOnPress(navigatorType) {
     return () => {
-      this.setState({
-        navigatorType : navigatorType
-      })
+      if (navigatorType == AXIOS_TEST) {
+        axios({
+          method: 'post',
+          url: 'http://catsforgold.com',
+          data: {
+            test: "Just testing axios",
+          }
+        }).then(response => {
+          let randomText = response.data.split('<title>')[1].split('</title>')[0];
+          this.setState({ testMessage: randomText });
+        });
+      } else {
+        this.setState({
+          navigatorType : navigatorType
+        });
+      }
     }
   }
 
