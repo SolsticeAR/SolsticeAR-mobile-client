@@ -25,9 +25,7 @@ export default class CampaignList extends Component {
   }
 
   onCampaignPress(id) {
-    this.setState({
-      message: "You clicked on campaign ID#: " + id,
-    });
+    this.props.onChooseCampaign(id);
   }
 
   render() {
