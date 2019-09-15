@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { listCampaigns } from './serverMessages.js';
 
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, TouchableHighlight } from 'react-native';
 
 export default class CampaignList extends Component {
   constructor(props) {
@@ -24,6 +24,12 @@ export default class CampaignList extends Component {
     });
   }
 
+  onCampaignPress(id) {
+    this.setState({
+      message: "You clicked on campaign ID#: " + id,
+    });
+  }
+
   render() {
     return (
       <View style={{flex: 1, flexDirection: "column"}}>
@@ -37,7 +43,12 @@ export default class CampaignList extends Component {
           {(this.state.isLoaded ? (
               <FlatList
                 data={this.state.campaigns}
-                renderItem={({ item }) => (<View style={{height: 50}}><Text>{item.name}</Text></View>)}
+                renderItem={({ item }) => (
+                  <TouchableHighlight onPress={() => { this.onCampaignPress(item.id) }}>
+                    <View style={{height: 50}}>
+                      <Text>{item.name}</Text>
+                    </View>
+                  </TouchableHighlight>)}
                 keyExtractor={item => ('' + item.id)}
               />
           ) : (
