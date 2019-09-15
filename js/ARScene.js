@@ -52,7 +52,10 @@ export default class ARScene extends Component {
       case "video":
         return (
           <ViroARScene>
-            <ViroText text={"TODO: Video"} scale={[.5, .5, .5]} position={[0, 0, -1]} style={styles.helloWorldTextStyle} />
+            <ViroVideo
+              source={{uri: data.videoUri}}
+              scale={[.1, .1, 0]}
+            />
           </ViroARScene>
         );
       case "text":
