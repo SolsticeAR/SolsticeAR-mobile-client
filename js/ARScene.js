@@ -12,7 +12,7 @@ import {
   ViroConstants,
 } from 'react-viro';
 
-export default class HelloWorldSceneAR extends Component {
+export default class ARScene extends Component {
 
   constructor() {
     super();
@@ -73,4 +73,4 @@ var styles = StyleSheet.create({
   },
 });
 
-module.exports = HelloWorldSceneAR;
+module.exports = ARScene;

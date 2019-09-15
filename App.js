@@ -27,7 +27,7 @@ import LoadArInfoScreen from './LoadArInfoScreen.js';
 import { setActiveExperienceData } from "./globalExperience.js";
 
 // Sets the default scene you want for AR and VR
-const InitialARScene = require('./js/HelloWorldSceneAR');
+const InitialARScene = require('./js/ARScene.js');
 
 export default class ViroSample extends Component {
   constructor() {
