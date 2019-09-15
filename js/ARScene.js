@@ -8,7 +8,9 @@ import { getActiveExperienceData } from '../globalExperience.js';
 
 import {
   ViroARScene,
+  ViroImage,
   ViroText,
+  ViroVideo,
   ViroConstants,
 } from 'react-viro';
 
@@ -40,7 +42,11 @@ export default class ARScene extends Component {
       case "image": 
       return (
         <ViroARScene onTrackingUpdated={this._onInitialized} >
-          <ViroText text={"TODO: Image"} scale={[.5, .5, .5]} position={[0, 0, -1]} style={styles.helloWorldTextStyle} />
+          <ViroImage
+            height={0.1}
+            width={0.1}
+            source={{uri: data.imageUri}}
+          />
         </ViroARScene>
       );
       case "video":
