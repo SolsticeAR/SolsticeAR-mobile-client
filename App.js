@@ -26,6 +26,8 @@ import { VIRO_API_KEY } from 'react-native-dotenv';
 
 import axios from 'react-native-axios'; 
 
+import { listCampaigns, getCampaignInfo } from './serverMessages.js';
+
 /*
  TODO: Insert your API key below
  */
@@ -35,7 +37,6 @@ var sharedProps = {
 
 // Sets the default scene you want for AR and VR
 var InitialARScene = require('./js/HelloWorldSceneAR');
-var InitialVRScene = require('./js/HelloWorldScene');
 
 var UNSET = "UNSET";
 var AXIOS_TEST = "AXIOS";
