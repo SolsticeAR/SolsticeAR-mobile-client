@@ -24,8 +24,10 @@ import { VIRO_API_KEY } from 'react-native-dotenv';
 import CampaignList from './CampaignList.js';
 import LoadArInfoScreen from './LoadArInfoScreen.js';
 
+import { setActiveExperienceData } from "./globalExperience.js";
+
 // Sets the default scene you want for AR and VR
-var InitialARScene = require('./js/HelloWorldSceneAR');
+const InitialARScene = require('./js/HelloWorldSceneAR');
 
 export default class ViroSample extends Component {
   constructor() {
@@ -35,11 +37,16 @@ export default class ViroSample extends Component {
       activeCampaignId: 0,
       testMessage: "...",
       navigatorType: "LIST",
+      scene: null
     }
   }
 
   onLoadComplete(data) {
-    this.setState({ activeCampaignId: data.id, navigatorType: 'AR' });
+    setActiveExperienceData(data);
+    this.setState({ 
+      activeCampaignId: data.id, 
+      navigatorType: 'AR'
+     });
   }
 
   onChooseCampaign(id) {

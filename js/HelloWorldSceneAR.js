@@ -4,6 +4,8 @@ import React, { Component } from 'react';
 
 import {StyleSheet} from 'react-native';
 
+import { getActiveExperienceData } from '../globalExperience.js';
+
 import {
   ViroARScene,
   ViroText,
@@ -25,11 +27,29 @@ export default class HelloWorldSceneAR extends Component {
   }
 
   render() {
-    return (
-      <ViroARScene onTrackingUpdated={this._onInitialized} >
-        <ViroText text={this.state.text} scale={[.5, .5, .5]} position={[0, 0, -1]} style={styles.helloWorldTextStyle} />
-      </ViroARScene>
-    );
+    let data = getActiveExperienceData();
+    let type = data.type;
+
+    switch(type) {
+      case "image": 
+      return (
+        <ViroARScene onTrackingUpdated={this._onInitialized} >
+          <ViroText text={"TODO: Image"} scale={[.5, .5, .5]} position={[0, 0, -1]} style={styles.helloWorldTextStyle} />
+        </ViroARScene>
+      );
+      case "video":
+        return (
+          <ViroARScene>
+            <ViroText text={"TODO: Video"} scale={[.5, .5, .5]} position={[0, 0, -1]} style={styles.helloWorldTextStyle} />
+          </ViroARScene>
+        );
+      case "text":
+          return (
+            <ViroARScene>
+              <ViroText text={ data.text } scale={[.5, .5, .5]} position={[0, 0, -1]} style={styles.helloWorldTextStyle} />
+            </ViroARScene>
+          );  
+    }
   }
 
   _onInitialized(state, reason) {
