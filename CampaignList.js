@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { listCampaigns } from './serverMessages.js';
 
-import { View, Text } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 
 export default class CampaignList extends Component {
   constructor(props) {
@@ -19,7 +19,8 @@ export default class CampaignList extends Component {
     listCampaigns().then(response => {
       this.setState({
         isLoaded: true, 
-        message: JSON.stringify(response) });
+        message: "Loaded.",
+        campaigns: response.data.campaigns });
     });
   }
 
@@ -34,7 +35,11 @@ export default class CampaignList extends Component {
         </View>
         <View style={{flex: 1}}>
           {(this.state.isLoaded ? (
-            <Text>TODO: show campaigns</Text>
+              <FlatList
+                data={this.state.campaigns}
+                renderItem={({ item }) => (<View style={{height: 50}}><Text>{item.name}</Text></View>)}
+                keyExtractor={item => ('' + item.id)}
+              />
           ) : (
             <Text>Loading...</Text>
           ))}
