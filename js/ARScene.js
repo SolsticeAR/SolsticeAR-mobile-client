@@ -19,7 +19,7 @@ export default class ARScene extends Component {
 
     // Set initial state here
     this.state = {
-      text : "Initializing AR..."
+      isInitialised: false,
     };
 
     // bind 'this' to functions
@@ -28,9 +28,15 @@ export default class ARScene extends Component {
 
   render() {
     let data = getActiveExperienceData();
-    let type = data.type;
+    let type = this.state.isInitialised ? data.type : "initialising";
 
     switch(type) {
+      case "initialising":
+        return (
+          <ViroARScene onTrackingUpdated={this._onInitialized} >
+          <ViroText text={"Initialising..."} scale={[.5, .5, .5]} position={[0, 0, -1]} style={styles.helloWorldTextStyle} />
+        </ViroARScene>
+        );
       case "image": 
       return (
         <ViroARScene onTrackingUpdated={this._onInitialized} >
@@ -55,7 +61,7 @@ export default class ARScene extends Component {
   _onInitialized(state, reason) {
     if (state == ViroConstants.TRACKING_NORMAL) {
       this.setState({
-        text : "Hello World!"
+        isInitialised: true
       });
     } else if (state == ViroConstants.TRACKING_NONE) {
       // Handle loss of tracking
