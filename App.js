@@ -9,11 +9,9 @@
 
 import React, { Component } from 'react';
 import {
-  AppRegistry,
   Text,
   View,
   StyleSheet,
-  PixelRatio,
   TouchableHighlight,
 } from 'react-native';
 
@@ -23,15 +21,8 @@ import {
 
 import { VIRO_API_KEY } from 'react-native-dotenv';
 
-import axios from 'react-native-axios'; 
-
 import CampaignList from './CampaignList.js';
 
-import { listCampaigns, getCampaignInfo } from './serverMessages.js';
-
-/*
- TODO: Insert your API key below
- */
 var sharedProps = {
   apiKey: VIRO_API_KEY,
 }
@@ -40,7 +31,6 @@ var sharedProps = {
 var InitialARScene = require('./js/HelloWorldSceneAR');
 
 var UNSET = "UNSET";
-var AXIOS_TEST = "AXIOS";
 var AR_NAVIGATOR_TYPE = "AR";
 
 // This determines which type of experience to launch in, or UNSET, if the user should
@@ -93,12 +83,6 @@ export default class ViroSample extends Component {
             <Text style={localStyles.buttonText}>AR</Text>
           </TouchableHighlight>
 
-          <TouchableHighlight style={localStyles.buttons}
-            onPress={this._getExperienceButtonOnPress(AXIOS_TEST)}
-            underlayColor={'#68a0ff'} >
-
-            <Text style={localStyles.buttonText}>Test Axios</Text>
-          </TouchableHighlight>
         </View>
       </View>
     );
@@ -116,22 +100,9 @@ export default class ViroSample extends Component {
   // by the experience selector buttons
   _getExperienceButtonOnPress(navigatorType) {
     return () => {
-      if (navigatorType == AXIOS_TEST) {
-        axios({
-          method: 'post',
-          url: 'http://catsforgold.com',
-          data: {
-            test: "Just testing axios",
-          }
-        }).then(response => {
-          let randomText = response.data.split('<title>')[1].split('</title>')[0];
-          this.setState({ testMessage: randomText });
-        });
-      } else {
-        this.setState({
-          navigatorType : navigatorType
-        });
-      }
+      this.setState({
+        navigatorType : navigatorType
+      });
     }
   }
 

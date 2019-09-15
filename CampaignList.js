@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { listCampaigns } from './serverMessages.js';
+
 import { View, Text } from 'react-native';
 
 export default class CampaignList extends Component {
@@ -11,6 +13,14 @@ export default class CampaignList extends Component {
       isLoaded: false,
       campaigns: [],
     };
+  }
+
+  componentDidMount() {
+    listCampaigns().then(response => {
+      this.setState({
+        isLoaded: true, 
+        message: JSON.stringify(response) });
+    });
   }
 
   render() {
