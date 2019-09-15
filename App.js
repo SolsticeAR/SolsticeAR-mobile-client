@@ -25,6 +25,8 @@ import { VIRO_API_KEY } from 'react-native-dotenv';
 
 import axios from 'react-native-axios'; 
 
+import CampaignList from './CampaignList.js';
+
 import { listCampaigns, getCampaignInfo } from './serverMessages.js';
 
 /*
@@ -64,7 +66,7 @@ export default class ViroSample extends Component {
   // if you are building a specific type of experience.
   render() {
     if (this.state.navigatorType == UNSET) {
-      return this._getExperienceSelector();
+      return (<CampaignList/>);
     } else if (this.state.navigatorType == AR_NAVIGATOR_TYPE) {
       return this._getARNavigator();
     }
