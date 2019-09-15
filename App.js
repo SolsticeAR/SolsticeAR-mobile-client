@@ -24,19 +24,8 @@ import { VIRO_API_KEY } from 'react-native-dotenv';
 import CampaignList from './CampaignList.js';
 import LoadArInfoScreen from './LoadArInfoScreen.js';
 
-var sharedProps = {
-  apiKey: VIRO_API_KEY,
-}
-
 // Sets the default scene you want for AR and VR
 var InitialARScene = require('./js/HelloWorldSceneAR');
-
-var UNSET = "UNSET";
-var AR_NAVIGATOR_TYPE = "AR";
-
-// This determines which type of experience to launch in, or UNSET, if the user should
-// be presented with a choice of AR or VR. By default, we offer the user a choice.
-var defaultNavigatorType = UNSET;
 
 export default class ViroSample extends Component {
   constructor() {
@@ -45,8 +34,7 @@ export default class ViroSample extends Component {
     this.state = {
       activeCampaignId: 0,
       testMessage: "...",
-      navigatorType: defaultNavigatorType,
-      sharedProps: sharedProps
+      navigatorType: "LIST",
     }
   }
 
@@ -61,7 +49,7 @@ export default class ViroSample extends Component {
   // Replace this function with the contents of _getVRNavigator() or _getARNavigator()
   // if you are building a specific type of experience.
   render() {
-    if (this.state.navigatorType == UNSET) {
+    if (this.state.navigatorType == "LIST") {
       return (
         <CampaignList 
           onChooseCampaign={(id) => {this.onChooseCampaign(id)}}
@@ -76,8 +64,13 @@ export default class ViroSample extends Component {
       );
     } else if (this.state.navigatorType == 'AR') {
       return (
-        <ViroARSceneNavigator {...this.state.sharedProps}
-          initialScene={{scene: InitialARScene}} />
+        <View style={{flex: 1, flexDirection: "column"}}>
+          <View style={{height: 50}}><Text>TODO: put a back button here and/or some title information.</Text></View>
+          <View style={{flex: 1}}>
+            <ViroARSceneNavigator apiKey={VIRO_API_KEY}
+              initialScene={{scene: InitialARScene}} />
+          </View>
+        </View>
       );
     } else {
       return (<Text>Invalid navigator type</Text>);
