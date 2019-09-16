@@ -23,6 +23,7 @@ import { VIRO_API_KEY } from 'react-native-dotenv';
 
 import CampaignList from './CampaignList.js';
 import LoadArInfoScreen from './LoadArInfoScreen.js';
+import Splash from './Splash.js';
 
 import { setActiveExperienceData } from "./globalExperience.js";
 
@@ -36,7 +37,7 @@ export default class ViroSample extends Component {
     this.state = {
       activeCampaignId: 0,
       testMessage: "...",
-      navigatorType: "LIST",
+      navigatorType: "SPLASH",
       scene: null
     }
   }
@@ -53,9 +54,16 @@ export default class ViroSample extends Component {
     this.setState({ activeCampaignId: id, navigatorType: 'LOADING' });
   }
 
+  onChooseCampaignList(optionalArg) {
+    this.setState({ navigatorType: "LIST"});
+  }
+
   // Replace this function with the contents of _getVRNavigator() or _getARNavigator()
   // if you are building a specific type of experience.
   render() {
+    if (this.state.navigatorType == "SPLASH") {
+    return ( <Splash onChooseCampaignList={(optionalArg) => {this.onChooseCampaignList(optionalArg)}}/>)
+    }
     if (this.state.navigatorType == "LIST") {
       return (
         <CampaignList 
