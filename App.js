@@ -79,6 +79,8 @@ export default class ViroSample extends Component {
           />
       );
     } else if (this.state.navigatorType == 'AR') {
+
+      // TODO: Move inline styles to react native StyleSheet
       return (
         <View style={{flex: 1, flexDirection: "column"}}>
             <TouchableHighlight onPress={() => {this.onChooseCampaignList()}} style={{flexDirection: "row-reverse", backgroundColor:"black"}}>
