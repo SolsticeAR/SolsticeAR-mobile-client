@@ -43,8 +43,8 @@ export default class ARScene extends Component {
       return (
         <ViroARScene onTrackingUpdated={this._onInitialized} >
           <ViroImage
-            height={0.1}
-            width={0.1}
+            position={[0, 0, -1]}
+            scale={[.5, .5, .5]}
             source={{uri: data.imageUri}}
           />
         </ViroARScene>
@@ -55,6 +55,7 @@ export default class ARScene extends Component {
             <ViroVideo
               source={{uri: data.videoUri}}
               scale={[.1, .1, 0]}
+              loop={true}
             />
           </ViroARScene>
         );
