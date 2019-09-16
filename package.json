@@ -12,6 +12,7 @@
     "react-native": "0.59.3",
     "react-native-axios": "^0.17.1",
     "react-native-dotenv": "^0.2.0",
+    "react-native-elements": "^1.2.0",
     "react-viro": "2.16.0"
   },
   "devDependencies": {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { listCampaigns } from './serverMessages.js';
 
-import { View, Text, FlatList, TouchableHighlight } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableHighlight } from 'react-native';
 
 export default class CampaignList extends Component {
   constructor(props) {
@@ -43,8 +43,8 @@ export default class CampaignList extends Component {
                 data={this.state.campaigns}
                 renderItem={({ item }) => (
                   <TouchableHighlight onPress={() => { this.onCampaignPress(item.id) }}>
-                    <View style={{height: 50}}>
-                      <Text>{item.name}</Text>
+                    <View style={localStyles.buttons}>
+                      <Text style={localStyles.text}>{item.name}</Text>
                     </View>
                   </TouchableHighlight>)}
                 keyExtractor={item => ('' + item.id)}
@@ -57,3 +57,18 @@ export default class CampaignList extends Component {
     );
   }
 }
+
+const localStyles = StyleSheet.create({
+  text: {
+    color:'#fff',
+    textAlign:'center',
+    fontSize : 20
+  },
+  buttons : {
+    height: 50,
+    borderRadius: 10,
+    marginTop: 2.5,
+    marginBottom: 2.5,
+    backgroundColor:'#68a0cf',
+  }
+});
