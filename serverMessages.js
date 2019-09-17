@@ -145,7 +145,14 @@ function listCampaigns() {
 }
 
 function getCampaign(id) {
-    return server.getCampaignInfo(activeUserCredentials, id);
+    return listCampaigns().then((response) => { 
+      return {
+        ok: true,
+        data: { 
+          campaign: response.data.campaigns.filter((campaign) => campaign.id === id)[0]
+        }
+      };
+    })
 }
 
 module.exports = {
