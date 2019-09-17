@@ -28,10 +28,6 @@ export default class Splash extends Component {
                 Welcome to Solstice AR. A platform that allows users to both create and enjoy unique augmented reality experiences.
               </Text>
             </View>
-            <View>
-              <Image source={require('./icons/splashpage-icon.gif')} style={localStyles.logo}>
-              </Image>
-            </View>
             <View style={localStyles.splashExitContainer}>
               <TouchableHighlight onPress={() => { this.onCampaignPress() }} style={localStyles.buttons} underlayColor={'#68a0ff'}>
                 <View>
@@ -59,7 +55,7 @@ const localStyles = StyleSheet.create({
     paddingBottom:20,
     marginTop: 10,
     marginBottom: 10,
-    backgroundColor:'#68a0cf',
+    backgroundColor:'#1e1a75',
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#fff',
@@ -78,17 +74,17 @@ const localStyles = StyleSheet.create({
 		marginRight:20,
 		borderRadius:20,
 		borderWidth:4,
-		borderColor:'#68a0cf'
+		borderColor:'#1e1a75'
 	},
 	splashTitle:{
-		color:'#68a0cf',
+		color:'#1e1a75',
         fontWeight:'bold',
 		fontSize:20,
 		textAlign:'center',
 		margin:10,	
 	},
 	splashDescription:{
-		color:'#68a0cf',
+		color:'#1e1a75',
         fontSize:15,
 		marginRight:20,
 		marginLeft:20
