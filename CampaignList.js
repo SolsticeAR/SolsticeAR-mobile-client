@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { listCampaigns } from './serverMessages.js';
 
-import { View, Text, FlatList, StyleSheet, TouchableHighlight } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableHighlight} from 'react-native';
 
 export default class CampaignList extends Component {
   constructor(props) {
@@ -31,12 +31,12 @@ export default class CampaignList extends Component {
   render() {
     return (
       <View style={{flex: 1, flexDirection: "column"}}>
-        <View style={{height: 25, backgroundColor: '#1e1a75'}}>
+        <View style={localStyles.header}>
           <Text style={localStyles.title}>Top AR Experiences</Text>
         </View>
-        <View style={{height: 25, backgroundColor: '#1e1a75'}}>
+        {/* <View style={{height: 25, backgroundColor: '#1e1a75'}}>
           <Text style={{color:"white"}}>{this.state.message}</Text>
-        </View>
+        </View> */}
         <View style={{flex: 1}}>
           {(this.state.isLoaded ? (
               <FlatList
@@ -44,7 +44,10 @@ export default class CampaignList extends Component {
                 renderItem={({ item }) => (
                   <TouchableHighlight onPress={() => { this.onCampaignPress(item.id) }}>
                     <View style={localStyles.buttons}>
+                      <View style={localStyles.preview}>
+                      </View>
                       <Text style={localStyles.text}>{item.name}</Text>
+                      <Text style={localStyles.views}>{item.views + " views"}</Text>
                     </View>
                   </TouchableHighlight>)}
                 keyExtractor={item => ('' + item.id)}
@@ -59,22 +62,54 @@ export default class CampaignList extends Component {
 }
 
 const localStyles = StyleSheet.create({
-  text: {
-    color:'#fff',
-    textAlign:'center',
-    fontSize : 20
-  },
-  buttons : {
+  header: {
+    backgroundColor: 'white',
     height: 50,
-    borderRadius: 10,
-    marginTop: 2.5,
-    marginBottom: 2.5,
-    backgroundColor:'#68a0cf',
+    shadowColor: '#1e1a75',
+    shadowOffset: { width: 5, height: 5 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 2,
+    marginBottom: 2,
   },
   title:{
-		color:'white',
-    fontWeight:'bold',
-		fontSize:20,
-		textAlign:'center',	
+    fontSize: 20,
+    fontWeight: "500",
+    color: "#7b4397",	
+    textAlign: "center"
 	},
+  views: {
+    color:'grey',
+    position: "absolute",
+    right: 0,
+  },
+  text: {
+    paddingLeft: 80,
+    color: "black"
+  },
+  preview: {
+    height: 50,
+    width: 50,
+    borderRadius: 50,
+    backgroundColor: '#343a40',
+    position: "absolute",
+    top: 0,
+    left: 0,
+  },
+  previewText: {
+    fontSize: 10,
+    fontWeight: "400",
+    textAlign: "center",
+    color: "white"
+  },
+  buttons : {
+    backgroundColor: "#fff",
+    height: 50,
+    borderRadius: 14,
+    margin: 15,
+    marginBottom: 1,
+    marginTop: 1,
+    shadowColor: '#1e1a75',
+    shadowOffset: { width: 5, height: 5 },
+  },
 });

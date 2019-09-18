@@ -46,7 +46,6 @@ const fakeServer = {
     },
 };
 
-
 const realServer = {
     listCampaigns: function(userCreds) {
         let url = REAL_DATA_URL_ROOT + '/api';
