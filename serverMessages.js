@@ -46,6 +46,51 @@ const fakeServer = {
     },
 };
 
+const processRealCampaign = (serverCamp) => {
+  let clientCamp = {
+    id: serverCamp.id,
+    name: serverCamp.name,
+    views: Math.floor(Math.random() * 10000), // This really needs to be handled in the server. I'm putting a random number here for now until this gets fixed.
+  };
+  
+  let activeCreativeId = serverCamp.activeCreativeId;
+  // right now activeCreativeId is coming back from the server as null, so 
+  // just pick the first one while this is broken.
+  let media = serverCamp.media[0];
+  if (activeCreativeId) { 
+    media = serverCamp.media.filter(m => m.id === activeCreativeId)[0];
+  }
+  if (!media) media = { type: "invalid" };
+
+  switch (media.type) {
+    case "image":
+      clientCamp.type = "image";
+      clientCamp.imageUri = media.url;
+      break;
+    case "animatedImage":
+      clientCamp.type = "animatedImage";
+      clientCamp.imageUri = media.url;
+      break;
+    case "video":
+      clientCamp.type = "video";
+      clientCamp.videoUri = media.url;
+      break;
+    case "text":
+      clientCamp.type = "text";
+      clientCamp.text = media.name;
+      break;
+    case "invalid":
+      clientCamp.type = "text";
+      clientCamp.text = "No active media";
+      break;
+    default:
+      clientCamp.type = "text";
+      clientCamp.text = "Unknown type: " + media.type;
+      break;
+  }
+  return clientCamp;
+};
+
 const realServer = {
     listCampaigns: function(userCreds) {
         let url = REAL_DATA_URL_ROOT + '/api';
@@ -74,73 +119,49 @@ const realServer = {
             }
             console.log(response);
              
-            const processCampaign = (serverCamp) => {
-              let clientCamp = {
-                id: serverCamp.id,
-                name: serverCamp.name,
-                views: Math.floor(Math.random() * 10000), // This really needs to be handled in the server. I'm putting a random number here for now until this gets fixed.
-              };
-              
-              let activeCreativeId = serverCamp.activeCreativeId;
-              // right now activeCreativeId is coming back from the server as null, so 
-              // just pick the first one while this is broken.
-              let media = serverCamp.media[0];
-              if (activeCreativeId) { 
-                media = serverCamp.media.filter(m => m.id === activeCreativeId)[0];
-              }
-              if (!media) media = { type: "invalid" };
-
-              switch (media.type) {
-                case "image":
-                  clientCamp.type = "image";
-                  clientCamp.imageUri = media.url;
-                  break;
-                case "animatedImage":
-                  clientCamp.type = "animatedImage";
-                  clientCamp.imageUri = media.url;
-                  break;
-                case "video":
-                  clientCamp.type = "video";
-                  clientCamp.videoUri = media.url;
-                  break;
-                case "text":
-                  clientCamp.type = "text";
-                  clientCamp.text = media.name;
-                  break;
-                case "invalid":
-                  clientCamp.type = "text";
-                  clientCamp.text = "No active media";
-                  break;
-                default:
-                  clientCamp.type = "text";
-                  clientCamp.text = "Unknown type: " + media.type;
-                  break;
-              }
-              return clientCamp;
-            };
-
             return {
               ok: true,
               debugInfo: JSON.stringify(response),
               data: {
-                campaigns: response.data.getCampaigns.map(processCampaign),
+                campaigns: response.data.getCampaigns.map(processRealCampaign),
               },
             };
         });
     },
     getCampaignInfo: function(userCreds, campaignId) {
         let url = REAL_DATA_URL_ROOT + '/api';
-        
-        // TODO: change this to graphql
-        return sendHttpRequest(url, {}).then(response => {
-            // TODO: munge real data to look like the fake data that I've been working with
-            return response;
+        return sendGqlRequest(url, `{
+          getActiveMediaCampaign(campaignId: ${campaignId}) {
+            id
+            name
+            media {
+                type
+                url
+                name
+                id
+            }
+          }
+        }`).then(response => {
+          
+          if (!response.data || !response.data.getActiveMediaCampaign) {
+            return { data: { errors: ["Unknown response from server" ] } };
+          }
+
+          // TODO: ideally the fake data should be changed to match the real data once
+          // the actual data is more stable.
+          let campaign = response.data.getActiveMediaCampaign[0];
+          if (campaign) {
+            return { data: { campaign: processRealCampaign(campaign) } };
+          } else {
+            return { data: { errors: ["Unknown campaign ID #"] } };
+          }
         });
     },
 }
 
 const server = parseInt(USE_FAKE_SERVER) ? fakeServer : realServer;
 
+// TODO: remove this once we pass feature freeze and client sign-in is not requested.
 let activeUserCredentials = {
     userId: 1,
 };
@@ -150,27 +171,14 @@ function listCampaigns() {
 }
 
 function getCampaign(id) {
-    return listCampaigns().then((response) => { 
-
-      if (!USE_FAKE_SERVER) {
-
-        // TODO: REMOVE THIS ONCE THE SERVER IS FINISHED BEING IMPLEMENTED
-        // Increment views. There is no API endpoint for getting the campaign data, so just send
-        // an HTTP request to the old site.
-        axios({
-          method: "GET",
-          uri: REAL_DATA_URL_ROOT + '/campaigns/' + id 
-        }).then(response => { /* ignored */ });
-
-      }
-
+    return server.getCampaignInfo(activeUserCredentials, id).then(response => {
       return {
         ok: true,
-        data: { 
-          campaign: response.data.campaigns.filter((campaign) => campaign.id === id)[0]
+        data: {
+          campaign: response.data.campaign
         }
-      };
-    })
+      }
+    });
 }
 
 module.exports = {
