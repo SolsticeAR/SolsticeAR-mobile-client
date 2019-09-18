@@ -31,11 +31,11 @@ export default class CampaignList extends Component {
   render() {
     return (
       <View style={{flex: 1, flexDirection: "column"}}>
-        <View style={{height: 50}}>
-          <Text>List of campaigns</Text>
+        <View style={{height: 25, backgroundColor: '#1e1a75'}}>
+          <Text style={localStyles.title}>Top AR Experiences</Text>
         </View>
-        <View style={{height: 50}}>
-          <Text>{this.state.message}</Text>
+        <View style={{height: 25, backgroundColor: '#1e1a75'}}>
+          <Text style={{color:"white"}}>{this.state.message}</Text>
         </View>
         <View style={{flex: 1}}>
           {(this.state.isLoaded ? (
@@ -70,5 +70,11 @@ const localStyles = StyleSheet.create({
     marginTop: 2.5,
     marginBottom: 2.5,
     backgroundColor:'#68a0cf',
-  }
+  },
+  title:{
+		color:'white',
+    fontWeight:'bold',
+		fontSize:20,
+		textAlign:'center',	
+	},
 });
