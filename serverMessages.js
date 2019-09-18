@@ -5,7 +5,7 @@ import {
     REAL_DATA_URL_ROOT,
 } from 'react-native-dotenv';
 
-
+ 
 const sendHttpRequest = function(url, requestBody) {
     const headers = {
         "Content-Type": "application/json",
@@ -35,7 +35,6 @@ let sendGqlRequest = function(uri, query) {
     });
   };
 
-
 const fakeServer = {
     listCampaigns: function(userCreds) {
         let url = FAKE_DATA_URL_ROOT + '/campaigns';
@@ -46,6 +45,7 @@ const fakeServer = {
         return sendHttpRequest(url, {});
     },
 };
+
 
 const realServer = {
     listCampaigns: function(userCreds) {
@@ -74,7 +74,7 @@ const realServer = {
               };
             }
             console.log(response);
-
+             
             const processCampaign = (serverCamp) => {
               let clientCamp = {
                 id: serverCamp.id,
@@ -93,13 +93,12 @@ const realServer = {
 
               switch (media.type) {
                 case "image":
-                  if (media.url.charAt(media.url.length - 1).toLowerCase() === "f") { //lol
-                    clientCamp.type = "animatedImage";
-                    clientCamp.imageUri = media.url;
-                  } else {
-                    clientCamp.type = "image";
-                    clientCamp.imageUri = media.url;
-                  }
+                  clientCamp.type = "image";
+                  clientCamp.imageUri = media.url;
+                  break;
+                case "animatedImage":
+                  clientCamp.type = "animatedImage";
+                  clientCamp.imageUri = media.url;
                   break;
                 case "video":
                   clientCamp.type = "video";

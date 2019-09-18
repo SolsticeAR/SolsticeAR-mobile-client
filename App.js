@@ -13,7 +13,8 @@ import {
   View,
   StyleSheet,
   TouchableHighlight,
-  Image
+  Image,
+  BackHandler
 } from 'react-native';
 
 import {
@@ -30,6 +31,15 @@ import { setActiveExperienceData } from "./globalExperience.js";
 
 // Sets the default scene you want for AR and VR
 const InitialARScene = require('./js/ARScene.js');
+
+let backhandler = null;
+
+BackHandler.addEventListener('hardwareBackPress', () => {
+  if (backhandler) {
+  backhandler();
+  return true;
+  }
+});
 
 export default class ViroSample extends Component {
   constructor() {
@@ -62,6 +72,8 @@ export default class ViroSample extends Component {
   // Replace this function with the contents of _getVRNavigator() or _getARNavigator()
   // if you are building a specific type of experience.
   render() {
+    backhandler = null;
+
     if (this.state.navigatorType == "SPLASH") {
     return ( <Splash onChooseCampaignList={(optionalArg) => {this.onChooseCampaignList(optionalArg)}}/>)
     }
@@ -79,7 +91,8 @@ export default class ViroSample extends Component {
           />
       );
     } else if (this.state.navigatorType == 'AR') {
-
+        backhandler = () => { this.onChooseCampaignList()};
+        
       // TODO: Move inline styles to react native StyleSheet
       return (
         <View style={{flex: 1, flexDirection: "column"}}>
