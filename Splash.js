@@ -31,7 +31,7 @@ export default class Splash extends Component {
             <View style={localStyles.splashExitContainer}>
               <TouchableHighlight onPress={() => { this.onCampaignPress() }} style={localStyles.buttons} underlayColor={'#68a0ff'}>
                 <View>
-                  <Text style={localStyles.buttonText}>TEST ME</Text>
+                  <Text style={localStyles.buttonText}>TRY IT</Text>
                 </View>
               </TouchableHighlight>
             </View>

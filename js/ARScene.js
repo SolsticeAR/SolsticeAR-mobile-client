@@ -9,6 +9,7 @@ import { getActiveExperienceData } from '../globalExperience.js';
 import {
   ViroARScene,
   ViroImage,
+  ViroAnimatedImage,
   ViroText,
   ViroVideo,
   ViroConstants,
@@ -49,6 +50,16 @@ export default class ARScene extends Component {
           />
         </ViroARScene>
       );
+      case "animatedImage":
+        return (
+          <ViroARScene onTrackingUpdated={this._onInitialized} >
+          <ViroAnimatedImage
+            position={[0, 0, -2]}
+            scale={[1, 1, 0]}
+            source={{uri: data.imageUri}}
+          />
+        </ViroARScene>
+        );
       case "video":
         return (
           <ViroARScene>

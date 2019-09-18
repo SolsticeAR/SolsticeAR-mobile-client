@@ -93,8 +93,13 @@ const realServer = {
 
               switch (media.type) {
                 case "image":
-                  clientCamp.type = "image";
-                  clientCamp.imageUri = media.url;
+                  if (media.url.charAt(media.url.length - 1).toLowerCase() === "f") { //lol
+                    clientCamp.type = "animatedImage";
+                    clientCamp.imageUri = media.url;
+                  } else {
+                    clientCamp.type = "image";
+                    clientCamp.imageUri = media.url;
+                  }
                   break;
                 case "video":
                   clientCamp.type = "video";
@@ -102,7 +107,7 @@ const realServer = {
                   break;
                 case "text":
                   clientCamp.type = "text";
-                  clientCamp.text = media.url;
+                  clientCamp.text = media.name;
                   break;
                 case "invalid":
                   clientCamp.type = "text";
