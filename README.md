@@ -10,8 +10,12 @@ Before building/running SolsticeAR mobile client, create a .env file that looks 
 VIRO_API_KEY=...your Viro API key goes here...
 USE_FAKE_SERVER=1
 FAKE_DATA_URL_ROOT=http://vrmockforjill.nfshost.com
-REAL_DATA_URL_ROOT=http://tba
+REAL_DATA_URL_ROOT=https://solsticear-serv.herokuapp.com
 ```
+
+To toggle between the fake and real server, change the value in the .env file.
+This will not register as a real change when the app reloads, so to trigger that also make a stupid change to the js, like adding a space.
+
 
 # Android Debug Build instructions
 

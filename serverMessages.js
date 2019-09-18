@@ -5,6 +5,7 @@ import {
     REAL_DATA_URL_ROOT,
 } from 'react-native-dotenv';
 
+
 const sendHttpRequest = function(url, requestBody) {
     const headers = {
         "Content-Type": "application/json",
@@ -33,6 +34,7 @@ let sendGqlRequest = function(uri, query) {
       };
     });
   };
+
 
 const fakeServer = {
     listCampaigns: function(userCreds) {
@@ -146,6 +148,19 @@ function listCampaigns() {
 
 function getCampaign(id) {
     return listCampaigns().then((response) => { 
+
+      if (!USE_FAKE_SERVER) {
+
+        // TODO: REMOVE THIS ONCE THE SERVER IS FINISHED BEING IMPLEMENTED
+        // Increment views. There is no API endpoint for getting the campaign data, so just send
+        // an HTTP request to the old site.
+        axios({
+          method: "GET",
+          uri: REAL_DATA_URL_ROOT + '/campaigns/' + id 
+        }).then(response => { /* ignored */ });
+
+      }
+
       return {
         ok: true,
         data: { 
