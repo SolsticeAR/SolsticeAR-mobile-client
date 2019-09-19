@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableHighlight, StyleSheet, Modal, Image } from 'react-native';
+import { View, Text, TouchableHighlight, StyleSheet, Modal, Image, Linking } from 'react-native';
 
 export default class Splash extends Component {
   
@@ -29,6 +29,9 @@ export default class Splash extends Component {
                   <Text style={localStyles.buttonText}>TRY IT</Text>
                 </View>
               </TouchableHighlight>
+            </View>
+            <View>
+            <Text style={localStyles.splashDescription} onPress={ ()=> Linking.openURL('https://solstice-splash.herokuapp.com') } >Click Here To Create Experiences</Text>
             </View>
           </View>
         </Modal>
@@ -89,10 +92,13 @@ const localStyles = StyleSheet.create({
 		margin:10,	
 	},
 	splashDescription:{
-		color:'#343a40',
+    color:'#1da1f2',
+    textAlign: 'center',
     fontSize:15,
 		marginRight:20,
-		marginLeft:20
+    marginLeft:20,
+    paddingBottom:50,
+    textDecorationLine: 'underline',
 	},
 	splashCloseIcon:{
 		alignSelf:'flex-end',
