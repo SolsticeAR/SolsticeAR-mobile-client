@@ -50,7 +50,6 @@ const processRealCampaign = (serverCamp) => {
   let clientCamp = {
     id: serverCamp.id,
     name: serverCamp.name,
-    views: Math.floor(Math.random() * 10000), // This really needs to be handled in the server. I'm putting a random number here for now until this gets fixed.
   };
   
   let activeCreativeId = serverCamp.activeCreativeId;
@@ -60,7 +59,9 @@ const processRealCampaign = (serverCamp) => {
   if (activeCreativeId) { 
     media = serverCamp.media.filter(m => m.id === activeCreativeId)[0];
   }
-  if (!media) media = { type: "invalid" };
+  if (!media) media = { type: "invalid"};
+
+  clientCamp.views = media.totalViews;
 
   switch (media.type) {
     case "image":
@@ -104,10 +105,7 @@ const realServer = {
                 name
                 url
                 type
-                views{
-                  date
-                  views
-                } 
+                totalViews
               }
             }
           }`).then(response => {
@@ -139,6 +137,7 @@ const realServer = {
                 url
                 name
                 id
+                totalViews
             }
           }
         }`).then(response => {

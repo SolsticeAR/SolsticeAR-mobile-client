@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { listCampaigns } from './serverMessages.js';
 
-import { View, Text, FlatList, StyleSheet, TouchableHighlight} from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableHighlight, Image} from 'react-native';
 
 export default class CampaignList extends Component {
   constructor(props) {
@@ -28,15 +28,21 @@ export default class CampaignList extends Component {
     this.props.onChooseCampaign(id);
   }
 
+  switchItems(item) {
+    switch (item.type) {
+      case "video": return require('./icons/videos.png');
+      case "image": return { uri: item.imageUri };
+      case "animatedImage": return { uri: item.imageUri };
+      case "text": return require('./icons/text.png');
+    }
+  }
+
   render() {
     return (
       <View style={{flex: 1, flexDirection: "column"}}>
         <View style={localStyles.header}>
           <Text style={localStyles.title}>Top AR Experiences</Text>
         </View>
-        {/* <View style={{height: 25, backgroundColor: '#1e1a75'}}>
-          <Text style={{color:"white"}}>{this.state.message}</Text>
-        </View> */}
         <View style={{flex: 1}}>
           {(this.state.isLoaded ? (
               <FlatList
@@ -45,9 +51,10 @@ export default class CampaignList extends Component {
                   <TouchableHighlight onPress={() => { this.onCampaignPress(item.id) }}>
                     <View style={localStyles.buttons}>
                       <View style={localStyles.preview}>
+                        <Image source={this.switchItems(item)} style={localStyles.image}/>
                       </View>
                       <Text style={localStyles.text}>{item.name}</Text>
-                      <Text style={localStyles.views}>{item.views + " views"}</Text>
+                      <Text style={localStyles.views}>{(item.views || 0) + " view" + (item.views === 1 ? '' : 's')}</Text>
                     </View>
                   </TouchableHighlight>)}
                 keyExtractor={item => ('' + item.id)}
@@ -87,14 +94,24 @@ const localStyles = StyleSheet.create({
     paddingLeft: 80,
     color: "black"
   },
+  image: {
+    height: 50,
+    width: 50,
+    borderRadius: 15,
+  },
   preview: {
     height: 50,
     width: 50,
-    borderRadius: 50,
-    backgroundColor: '#343a40',
+    borderRadius: 15,
+    backgroundColor: '#f6f6f6',
     position: "absolute",
     top: 0,
     left: 0,
+    shadowColor: '#1e1a75',
+    shadowOffset: { width: 5, height: 5 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 1,
   },
   previewText: {
     fontSize: 10,
