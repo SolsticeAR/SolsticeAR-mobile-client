@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { ActivityIndicator, View, Text } from 'react-native';
 import { getCampaign } from './serverMessages.js';
 
 export default class LoadArInfoScreen extends Component {
@@ -20,7 +20,7 @@ export default class LoadArInfoScreen extends Component {
   render() {
     return (
       <View>
-        <Text>{this.state.message}</Text>
+        <ActivityIndicator style={{margin:50}} size="large" color="#800080"/>
       </View>
     );
   }

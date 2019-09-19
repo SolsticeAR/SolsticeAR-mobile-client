@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { listCampaigns, setActiveSortMode } from './serverMessages.js';
 
-import { View, Text, FlatList, StyleSheet, TouchableHighlight, Image} from 'react-native';
+import { ActivityIndicator, View, Text, FlatList, StyleSheet, TouchableHighlight, Image} from 'react-native';
 
 import CornerMenu from './CornerMenu.js';
 
@@ -76,7 +76,7 @@ export default class CampaignList extends Component {
                 keyExtractor={item => ('' + item.id)}
               />
           ) : (
-            <Text>Loading...</Text>
+            <ActivityIndicator style={{margin:50}} size="large" color="#800080"/>
           ))}
         </View>
       </View>
