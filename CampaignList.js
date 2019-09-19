@@ -41,7 +41,8 @@ export default class CampaignList extends Component {
     return (
       <View style={{flex: 1, flexDirection: "column"}}>
         <View style={localStyles.header}>
-          <Text style={localStyles.title}>Top AR Experiences</Text>
+          {/* <Text style={localStyles.title}>Top AR Experiences</Text> */}
+          <Image style={localStyles.titleHeader}source={require('./icons/header-maybe.png')}></Image>
         </View>
         <View style={{flex: 1}}>
           {(this.state.isLoaded ? (
@@ -54,8 +55,10 @@ export default class CampaignList extends Component {
                         <Image source={this.switchItems(item)} style={localStyles.image}/>
                       </View>
                       <Text style={localStyles.text}>{item.name}</Text>
+                      <View><Text style={localStyles.typeText}>{item.type}</Text></View>
                       <Text style={localStyles.views}>{(item.views || 0) + " view" + (item.views === 1 ? '' : 's')}</Text>
                     </View>
+                    
                   </TouchableHighlight>)}
                 keyExtractor={item => ('' + item.id)}
               />
@@ -79,20 +82,34 @@ const localStyles = StyleSheet.create({
     elevation: 2,
     marginBottom: 2,
   },
-  title:{
-    fontSize: 20,
-    fontWeight: "500",
-    color: "#7b4397",	
-    textAlign: "center"
-	},
+  titleHeader: {
+    alignSelf: 'center',
+    height: 50,
+    width: 275
+  },
+
+  // title:{
+  //   fontSize: 20,
+  //   fontWeight: "500",
+  //   color: "#7b4397",	
+  //   textAlign: "center",
+  //   fontFamily: "Catamaran"
+	// },
   views: {
     color:'grey',
     position: "absolute",
     right: 0,
   },
   text: {
-    paddingLeft: 80,
-    color: "black"
+    paddingLeft: 70,
+    color: "black",
+    fontFamily: "Catamaran"
+  },
+  typeText: {
+    paddingLeft: 70,
+    color: "grey",
+    fontFamily: "Catamaran",
+    fontStyle: "italic",
   },
   image: {
     height: 50,
@@ -123,7 +140,7 @@ const localStyles = StyleSheet.create({
     backgroundColor: "#fff",
     height: 50,
     borderRadius: 14,
-    margin: 15,
+    margin: 5,
     marginBottom: 1,
     marginTop: 1,
     shadowColor: '#1e1a75',

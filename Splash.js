@@ -15,18 +15,13 @@ export default class Splash extends Component {
     return (
       <View>
         <Modal
-          animationType={"slide"}
+          animationType={"fade"}
           transparent={true}
           style={localStyles.splashContainer}
         >
           <View style={localStyles.splashContainer}>
             <View style={localStyles.splashTitleContainer}>
-              <Text style={localStyles.splashTitle}>Solstice AR</Text>
-            </View>
-            <View style={localStyles.splashDescriptionContainer}>
-              <Text style={localStyles.splashDescription } allowFontScaling={true}>
-                Welcome to Solstice AR. A platform that allows users to both create and enjoy unique augmented reality experiences.
-              </Text>
+            <Image source={require('./icons/solstice-splash.jpg')} style={localStyles.splashImage}></Image>
             </View>
             <View style={localStyles.splashExitContainer}>
               <TouchableHighlight onPress={() => { this.onCampaignPress() }} style={localStyles.buttons} underlayColor={'#68a0ff'}>
@@ -62,6 +57,16 @@ const localStyles = StyleSheet.create({
     height: 100,
 		alignItems:'center',
   },
+  splashImage:{
+    alignSelf: 'center', 
+    height: 150, 
+    width: 275, 
+    borderRadius: 15,
+    shadowColor: '#7b4397',
+    shadowOffset: { width: 5, height: 5 },
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
+  },
   splashContainer: {
     flex: 1,
     borderRadius: 10,
@@ -92,7 +97,7 @@ const localStyles = StyleSheet.create({
 	splashCloseIcon:{
 		alignSelf:'flex-end',
 		flex:0.5,
-		marginRight:10
+    marginRight:10,
 	},
 	splashTitleContainer:{
 		flex:1,
