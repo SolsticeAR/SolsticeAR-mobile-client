@@ -4,7 +4,7 @@ import { listCampaigns, setActiveSortMode } from './serverMessages.js';
 
 import { View, Text, FlatList, StyleSheet, TouchableHighlight, Image} from 'react-native';
 
-import OptionsMenu from 'react-native-options-menu';
+import CornerMenu from './CornerMenu.js';
 
 export default class CampaignList extends Component {
   constructor(props) {
@@ -53,18 +53,9 @@ export default class CampaignList extends Component {
       <View style={{flex: 1, flexDirection: "column"}}>
         <View style={localStyles.header}>
           <Image style={localStyles.titleHeader}source={require('./icons/header-maybe.png')}></Image>
-          <View style={{position: 'absolute', right: 10, top: 10}}>
-          <OptionsMenu 
-              style={{margin:10}}
-              button={require('./icons/hamburger_menu.png')}
-              buttonStyle={{width: 30, height: 30, resizeMode: 'contain'}}
-              options={["Show All", "Show Top 10", "Show Newest"]}
-              actions={[
-                () => { this.setSortMode('all') },
-                () => { this.setSortMode('top10') },
-                () => { this.setSortMode('new') },
-              ]}/>
-          </View>
+          <CornerMenu 
+              setSortMode={(mode) => {this.setSortMode(mode)}}
+              onCampaignPress={(id) => { this.onCampaignPress(id);}}/>
         </View>
         <View style={{flex: 1}}>
           {(this.state.isLoaded ? (
