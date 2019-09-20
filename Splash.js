@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableHighlight, StyleSheet, Modal, Image } from 'react-native';
+import { View, Text, TouchableHighlight, StyleSheet, Modal, Image, Linking } from 'react-native';
 
 export default class Splash extends Component {
   
@@ -15,25 +15,23 @@ export default class Splash extends Component {
     return (
       <View>
         <Modal
-          animationType={"slide"}
+          animationType={"fade"}
           transparent={true}
           style={localStyles.splashContainer}
         >
           <View style={localStyles.splashContainer}>
             <View style={localStyles.splashTitleContainer}>
-              <Text style={localStyles.splashTitle}>Solstice AR</Text>
-            </View>
-            <View style={localStyles.splashDescriptionContainer}>
-              <Text style={localStyles.splashTitle } allowFontScaling={true}>
-                Welcome to Solstice AR. A platform that allows users to both create and enjoy unique augmented reality experiences.
-              </Text>
+            <Image source={require('./icons/solstice-splash.jpg')} style={localStyles.splashImage}></Image>
             </View>
             <View style={localStyles.splashExitContainer}>
               <TouchableHighlight onPress={() => { this.onCampaignPress() }} style={localStyles.buttons} underlayColor={'#68a0ff'}>
                 <View>
-                  <Text style={localStyles.buttonText}>TEST ME</Text>
+                  <Text style={localStyles.buttonText}>TRY IT</Text>
                 </View>
               </TouchableHighlight>
+            </View>
+            <View>
+            <Text style={localStyles.splashDescription} onPress={ ()=> Linking.openURL('https://solstice-splash.herokuapp.com') } >Click Here To Create Experiences</Text>
             </View>
           </View>
         </Modal>
@@ -43,56 +41,69 @@ export default class Splash extends Component {
 }
 
 const localStyles = StyleSheet.create({
-  buttonText: {
-    color:'#fff',
-    textAlign:'center',
-    fontSize : 20
-  },
-  buttons : {
-    height: 80,
-    width: 150,
-    paddingTop:20,
-    paddingBottom:20,
-    marginTop: 10,
-    marginBottom: 10,
-    backgroundColor:'#1e1a75',
-    borderRadius: 10,
+  buttons: {
+    padding: 5,
+    borderRadius: 5,
+    backgroundColor: 'white',
+    borderColor: '#1e1a75',
     borderWidth: 1,
-    borderColor: '#fff',
+    marginTop: 5,
+    marginRight: 5,
+    width: 150,
+  },
+  buttonText: {
+    color: '#1e1a75',
+    alignSelf: 'center',
   },
   logo:{
     width: 100,
     height: 100,
 		alignItems:'center',
   },
-  splashContainer:{
-		backgroundColor:'white',
-		flex:1,
-		marginTop:70,
-		marginBottom:40,
-		marginLeft:20,
-		marginRight:20,
-		borderRadius:20,
-		borderWidth:4,
-		borderColor:'#1e1a75'
-	},
+  splashImage:{
+    alignSelf: 'center', 
+    height: 150, 
+    width: 275, 
+    borderRadius: 15,
+    shadowColor: '#7b4397',
+    shadowOffset: { width: 5, height: 5 },
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
+  },
+  splashContainer: {
+    flex: 1,
+    borderRadius: 10,
+    shadowColor: '#7b4397',
+    shadowOffset: { width: 5, height: 5 },
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
+    elevation: 1,
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 70,
+    marginBottom: 40,
+    backgroundColor: 'white',
+  },
 	splashTitle:{
 		color:'#1e1a75',
-        fontWeight:'bold',
+    fontWeight:'bold',
 		fontSize:20,
 		textAlign:'center',
 		margin:10,	
 	},
 	splashDescription:{
-		color:'#1e1a75',
-        fontSize:15,
+    color:'#1da1f2',
+    textAlign: 'center',
+    fontSize:15,
 		marginRight:20,
-		marginLeft:20
+    marginLeft:20,
+    paddingBottom:50,
+    textDecorationLine: 'underline',
 	},
 	splashCloseIcon:{
 		alignSelf:'flex-end',
 		flex:0.5,
-		marginRight:10
+    marginRight:10,
 	},
 	splashTitleContainer:{
 		flex:1,

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { listCampaigns } from './serverMessages.js';
 
-import { View, Text, FlatList, StyleSheet, TouchableHighlight } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableHighlight, Image} from 'react-native';
 
 export default class CampaignList extends Component {
   constructor(props) {
@@ -28,14 +28,21 @@ export default class CampaignList extends Component {
     this.props.onChooseCampaign(id);
   }
 
+  switchItems(item) {
+    switch (item.type) {
+      case "video": return require('./icons/videos.png');
+      case "image": return { uri: item.imageUri };
+      case "animatedImage": return { uri: item.imageUri };
+      case "text": return require('./icons/text.png');
+    }
+  }
+
   render() {
     return (
       <View style={{flex: 1, flexDirection: "column"}}>
-        <View style={{height: 25, backgroundColor: '#1e1a75'}}>
-          <Text style={localStyles.title}>Top AR Experiences</Text>
-        </View>
-        <View style={{height: 25, backgroundColor: '#1e1a75'}}>
-          <Text style={{color:"white"}}>{this.state.message}</Text>
+        <View style={localStyles.header}>
+          {/* <Text style={localStyles.title}>Top AR Experiences</Text> */}
+          <Image style={localStyles.titleHeader}source={require('./icons/header-maybe.png')}></Image>
         </View>
         <View style={{flex: 1}}>
           {(this.state.isLoaded ? (
@@ -44,8 +51,14 @@ export default class CampaignList extends Component {
                 renderItem={({ item }) => (
                   <TouchableHighlight onPress={() => { this.onCampaignPress(item.id) }}>
                     <View style={localStyles.buttons}>
+                      <View style={localStyles.preview}>
+                        <Image source={this.switchItems(item)} style={localStyles.image}/>
+                      </View>
                       <Text style={localStyles.text}>{item.name}</Text>
+                      <View><Text style={localStyles.typeText}>{item.type}</Text></View>
+                      <Text style={localStyles.views}>{(item.views || 0) + " view" + (item.views === 1 ? '' : 's')}</Text>
                     </View>
+                    
                   </TouchableHighlight>)}
                 keyExtractor={item => ('' + item.id)}
               />
@@ -59,22 +72,78 @@ export default class CampaignList extends Component {
 }
 
 const localStyles = StyleSheet.create({
+  header: {
+    backgroundColor: 'white',
+    height: 50,
+    shadowColor: '#1e1a75',
+    shadowOffset: { width: 5, height: 5 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 2,
+    marginBottom: 2,
+  },
+  titleHeader: {
+    alignSelf: 'center',
+    height: 50,
+    width: 275
+  },
+
+  // title:{
+  //   fontSize: 20,
+  //   fontWeight: "500",
+  //   color: "#7b4397",	
+  //   textAlign: "center",
+  //   fontFamily: "Catamaran"
+	// },
+  views: {
+    color:'grey',
+    position: "absolute",
+    right: 0,
+  },
   text: {
-    color:'#fff',
-    textAlign:'center',
-    fontSize : 20
+    paddingLeft: 70,
+    color: "black",
+    fontFamily: "Catamaran"
+  },
+  typeText: {
+    paddingLeft: 70,
+    color: "grey",
+    fontFamily: "Catamaran",
+    fontStyle: "italic",
+  },
+  image: {
+    height: 50,
+    width: 50,
+    borderRadius: 15,
+  },
+  preview: {
+    height: 50,
+    width: 50,
+    borderRadius: 15,
+    backgroundColor: '#f6f6f6',
+    position: "absolute",
+    top: 0,
+    left: 0,
+    shadowColor: '#1e1a75',
+    shadowOffset: { width: 5, height: 5 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 1,
+  },
+  previewText: {
+    fontSize: 10,
+    fontWeight: "400",
+    textAlign: "center",
+    color: "white"
   },
   buttons : {
+    backgroundColor: "#fff",
     height: 50,
-    borderRadius: 10,
-    marginTop: 2.5,
-    marginBottom: 2.5,
-    backgroundColor:'#68a0cf',
+    borderRadius: 14,
+    margin: 5,
+    marginBottom: 1,
+    marginTop: 1,
+    shadowColor: '#1e1a75',
+    shadowOffset: { width: 5, height: 5 },
   },
-  title:{
-		color:'white',
-    fontWeight:'bold',
-		fontSize:20,
-		textAlign:'center',	
-	},
 });

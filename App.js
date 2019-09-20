@@ -13,7 +13,8 @@ import {
   View,
   StyleSheet,
   TouchableHighlight,
-  Image
+  Image,
+  BackHandler
 } from 'react-native';
 
 import {
@@ -30,6 +31,15 @@ import { setActiveExperienceData } from "./globalExperience.js";
 
 // Sets the default scene you want for AR and VR
 const InitialARScene = require('./js/ARScene.js');
+
+let backhandler = null;
+
+BackHandler.addEventListener('hardwareBackPress', () => {
+  if (backhandler) {
+  backhandler();
+  return true;
+  }
+});
 
 export default class ViroSample extends Component {
   constructor() {
@@ -62,6 +72,8 @@ export default class ViroSample extends Component {
   // Replace this function with the contents of _getVRNavigator() or _getARNavigator()
   // if you are building a specific type of experience.
   render() {
+    backhandler = null;
+
     if (this.state.navigatorType == "SPLASH") {
     return ( <Splash onChooseCampaignList={(optionalArg) => {this.onChooseCampaignList(optionalArg)}}/>)
     }
@@ -79,12 +91,12 @@ export default class ViroSample extends Component {
           />
       );
     } else if (this.state.navigatorType == 'AR') {
-
-      // TODO: Move inline styles to react native StyleSheet
+        backhandler = () => { this.onChooseCampaignList()};
+        
       return (
         <View style={{flex: 1, flexDirection: "column"}}>
-            <TouchableHighlight onPress={() => {this.onChooseCampaignList()}} style={{flexDirection: "row-reverse", backgroundColor:"black"}}>
-              <Image source={require('./icons/home-button-white.png')} style={{height: 50, width: 50}}/>
+            <TouchableHighlight onPress={() => {this.onChooseCampaignList()}} style={localStyles.header}>
+              <Image source={require('./icons/home-button-200x200.png')} style={localStyles.icon}/>
             </TouchableHighlight>
           <View style={{flex: 1}}>
             <ViroARSceneNavigator apiKey={VIRO_API_KEY}
@@ -99,8 +111,21 @@ export default class ViroSample extends Component {
 }
 
 var localStyles = StyleSheet.create({
-  backButton :{
-    
+  header :{
+    backgroundColor: 'white',
+    height: 50,
+    shadowColor: '#1e1a75',
+    shadowOffset: { width: 5, height: 5 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 2,
+    marginBottom: 2,
+  },
+  icon: {
+  position: "absolute",
+  right: 0, 
+  height: 50,
+  width: 50.
   }
 });
 
