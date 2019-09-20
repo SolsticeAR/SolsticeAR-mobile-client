@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 
-import { listCampaigns } from './serverMessages.js';
+import { listCampaigns, setActiveSortMode } from './serverMessages.js';
 
-import { View, Text, FlatList, StyleSheet, TouchableHighlight, Image} from 'react-native';
+import { ActivityIndicator, View, Text, FlatList, StyleSheet, TouchableHighlight, Image} from 'react-native';
+
+import CornerMenu from './CornerMenu.js';
 
 export default class CampaignList extends Component {
   constructor(props) {
@@ -16,6 +18,10 @@ export default class CampaignList extends Component {
   }
 
   componentDidMount() {
+    this.loadCampaigns();
+  }
+
+  loadCampaigns() {
     listCampaigns().then(response => {
       this.setState({
         isLoaded: true, 
@@ -37,12 +43,19 @@ export default class CampaignList extends Component {
     }
   }
 
+  setSortMode(mode) {
+    setActiveSortMode(mode);
+    this.loadCampaigns();
+  }
+
   render() {
     return (
       <View style={{flex: 1, flexDirection: "column"}}>
         <View style={localStyles.header}>
-          {/* <Text style={localStyles.title}>Top AR Experiences</Text> */}
           <Image style={localStyles.titleHeader}source={require('./icons/header-maybe.png')}></Image>
+          <CornerMenu 
+              setSortMode={(mode) => {this.setSortMode(mode)}}
+              onCampaignPress={(id) => { this.onCampaignPress(id);}}/>
         </View>
         <View style={{flex: 1}}>
           {(this.state.isLoaded ? (
@@ -63,7 +76,7 @@ export default class CampaignList extends Component {
                 keyExtractor={item => ('' + item.id)}
               />
           ) : (
-            <Text>Loading...</Text>
+            <ActivityIndicator style={{margin:50}} size="large" color="#800080"/>
           ))}
         </View>
       </View>

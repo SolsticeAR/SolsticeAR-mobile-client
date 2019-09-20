@@ -5,7 +5,13 @@ import {
     REAL_DATA_URL_ROOT,
 } from 'react-native-dotenv';
 
+let activeSortMode = 'all';
+
  
+const setActiveSortMode = function(mode) {
+  activeSortMode = mode;
+}
+
 const sendHttpRequest = function(url, requestBody) {
     const headers = {
         "Content-Type": "application/json",
@@ -165,8 +171,53 @@ let activeUserCredentials = {
     userId: 1,
 };
 
+const sortByKey = function(arr, f) {
+  arr.sort((a, b) => {
+    let aKey = f(a);
+    let bKey = f(b);
+    if (aKey === bKey) return 0;
+    return aKey < bKey ? -1 : 1;
+  });
+  return arr;
+}
+
+// TODO: sorting should be done on the server as this is not scalable.
 function listCampaigns() {
-    return server.listCampaigns(activeUserCredentials);
+    return server.listCampaigns(activeUserCredentials).then(response => {
+      let campaigns = response.data.campaigns;
+      switch (activeSortMode) {
+        case 'top10':
+          campaigns = sortByKey(campaigns, c => -(c.views || 0)).slice(0, 10);
+          break;
+        
+        case 'new':
+          campaigns = sortByKey(campaigns, c => -c.id);
+          break;
+        
+        case 'image': 
+          campaigns = campaigns.filter( c => c.type === 'image');
+          break;
+
+        case 'animatedImage': 
+          campaigns = campaigns.filter( c => c.type === 'animatedImage');
+          break;
+
+        case 'video': 
+          campaigns = campaigns.filter( c => c.type === 'video');
+          break;
+
+        case 'text': 
+          campaigns = campaigns.filter( c => c.type === 'text');
+          break;
+        
+        case 'all':
+        default:
+          break;
+      }
+
+      response.data.campaigns = campaigns;
+      return response;
+    });
 }
 
 function getCampaign(id) {
@@ -183,4 +234,5 @@ function getCampaign(id) {
 module.exports = {
     listCampaigns,
     getCampaign,
+    setActiveSortMode,
 };
