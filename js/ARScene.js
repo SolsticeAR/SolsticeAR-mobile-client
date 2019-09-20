@@ -63,12 +63,15 @@ export default class ARScene extends Component {
           <ViroAnimatedImage
             position={[0, 0, -2]}
             scale={[1, 1, 0]}
+<<<<<<< HEAD
             rotation={[0, 180, 0]}
             source={{uri: data.imageUri}}
           />
           <ViroAnimatedImage
             position={[0, 0, -2]}
             scale={[1, 1, 0]}
+=======
+>>>>>>> da48ecb3d104665a7dadcc01bd12c78d586fe592
             source={{uri: data.imageUri}}
           />
         </ViroARScene>
