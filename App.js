@@ -116,9 +116,6 @@ export default class ViroSample extends Component {
 var localStyles = StyleSheet.create({
   header: {
     backgroundColor: 'white',
-    height: 50,
-    shadowColor: '#1e1a75',
-    shadowOffset: { width: 5, height: 5 },
     shadowOpacity: 0.2,
     shadowRadius: 8,
     elevation: 2,
