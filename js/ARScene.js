@@ -38,6 +38,7 @@ export default class ARScene extends Component {
         return (
           <ViroARScene onTrackingUpdated={this._onInitialized} >
           <ViroText text={"Initialising..."} scale={[.5, .5, .5]} position={[0, 0, -1]} style={styles.helloWorldTextStyle} />
+          <ViroText text={"Initialising..."} scale={[.5, .5, .5]} rotation={[0, 180, 0]} position={[0, 0, -1]} style={styles.helloWorldTextStyle} />
         </ViroARScene>
         );
       case "image": 
@@ -48,11 +49,23 @@ export default class ARScene extends Component {
             scale={[1, 1, 0]}
             source={{uri: data.imageUri}}
           />
+          <ViroImage
+            position={[0, 0, -2]}
+            rotation={[0, 180, 0]}
+            scale={[1, 1, 0]}
+            source={{uri: data.imageUri}}
+          />
         </ViroARScene>
       );
       case "animatedImage":
         return (
           <ViroARScene onTrackingUpdated={this._onInitialized} >
+          <ViroAnimatedImage
+            position={[0, 0, -2]}
+            scale={[1, 1, 0]}
+            rotation={[0, 180, 0]}
+            source={{uri: data.imageUri}}
+          />
           <ViroAnimatedImage
             position={[0, 0, -2]}
             scale={[1, 1, 0]}
@@ -66,6 +79,12 @@ export default class ARScene extends Component {
             <ViroVideo
               source={{uri: data.videoUri}}
               position={[0, 0, -2]}
+              loop={true}
+            />
+            <ViroVideo
+              source={{uri: data.videoUri}}
+              position={[0, 0, -2]}
+              rotation={[0, 180, 0]}
               loop={true}
             />
           </ViroARScene>

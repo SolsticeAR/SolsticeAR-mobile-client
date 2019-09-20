@@ -21,11 +21,15 @@ export default class CornerMenu extends Component {
             style={{margin:10}}
             button={require('./icons/hamburger_menu.png')}
             buttonStyle={{width: 30, height: 30, resizeMode: 'contain'}}
-            options={["Show All", "Show Top 10", "Show Newest", "Search by ID#"]}
+            options={["Show All", "Show Top 10", "Show Newest", "Show Images", "Show Animations", "Show Videos", "Show Text", "Search by ID#"]}
             actions={[
               () => { this.props.setSortMode('all') },
               () => { this.props.setSortMode('top10') },
               () => { this.props.setSortMode('new') },
+              () => { this.props.setFilterType('image')},
+              () => { this.props.setFilterType('animatedImage')},
+              () => { this.props.setFilterType('video')},
+              () => { this.props.setFilterType('text')},
               () => { this.setState({ isSearchByIdVisible: true })},
             ]}/>
         <DialogInput 
