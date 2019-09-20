@@ -21,7 +21,7 @@ export default class Splash extends Component {
         >
           <View style={localStyles.splashContainer}>
             <View style={localStyles.splashTitleContainer}>
-            <Image source={require('./icons/solstice-splash.jpg')} style={localStyles.splashImage}></Image>
+            <Image source={require('./icons/solstice-splash.png')} style={localStyles.splashImage}></Image>
             </View>
             <View style={localStyles.splashExitContainer}>
               <TouchableHighlight onPress={() => { this.onCampaignPress() }} style={localStyles.buttons} underlayColor={'#68a0ff'}>
@@ -50,6 +50,8 @@ const localStyles = StyleSheet.create({
     marginTop: 5,
     marginRight: 5,
     width: 150,
+    position: 'absolute',
+    top: 210,
   },
   buttonText: {
     color: '#1e1a75',
@@ -61,10 +63,13 @@ const localStyles = StyleSheet.create({
 		alignItems:'center',
   },
   splashImage:{
-    alignSelf: 'center', 
-    height: 150, 
-    width: 275, 
+    alignSelf: 'center',
+    resizeMode: 'contain',
     borderRadius: 15,
+    width: 200,
+    height: 200,
+    position: 'absolute',
+    top: 200,
     shadowColor: '#7b4397',
     shadowOffset: { width: 5, height: 5 },
     shadowOpacity: 0.5,
