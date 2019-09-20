@@ -9,200 +9,126 @@
 
 import React, { Component } from 'react';
 import {
-  AppRegistry,
   Text,
   View,
   StyleSheet,
-  PixelRatio,
   TouchableHighlight,
+  Image,
+  BackHandler
 } from 'react-native';
 
 import {
-  ViroVRSceneNavigator,
   ViroARSceneNavigator
 } from 'react-viro';
 
 import { VIRO_API_KEY } from 'react-native-dotenv';
 
-import axios from 'react-native-axios'; 
+import CampaignList from './CampaignList.js';
+import LoadArInfoScreen from './LoadArInfoScreen.js';
+import Splash from './Splash.js';
+import BackButton from './BackButton.js';
 
-/*
- TODO: Insert your API key below
- */
-var sharedProps = {
-  apiKey: VIRO_API_KEY,
-}
+import { setActiveExperienceData } from "./globalExperience.js";
 
 // Sets the default scene you want for AR and VR
-var InitialARScene = require('./js/HelloWorldSceneAR');
-var InitialVRScene = require('./js/HelloWorldScene');
+const InitialARScene = require('./js/ARScene.js');
 
-var UNSET = "UNSET";
-var AXIOS_TEST = "AXIOS";
-var AR_NAVIGATOR_TYPE = "AR";
+let backhandler = null;
 
-// This determines which type of experience to launch in, or UNSET, if the user should
-// be presented with a choice of AR or VR. By default, we offer the user a choice.
-var defaultNavigatorType = UNSET;
+BackHandler.addEventListener('hardwareBackPress', () => {
+  if (backhandler) {
+  backhandler();
+  return true;
+  }
+});
 
 export default class ViroSample extends Component {
   constructor() {
     super();
 
     this.state = {
+      activeCampaignId: 0,
       testMessage: "...",
-      navigatorType: defaultNavigatorType,
-      sharedProps: sharedProps
+      navigatorType: "SPLASH",
+      scene: null
     }
-    this._getExperienceSelector = this._getExperienceSelector.bind(this);
-    this._getARNavigator = this._getARNavigator.bind(this);
-    this._getVRNavigator = this._getVRNavigator.bind(this);
-    this._getExperienceButtonOnPress = this._getExperienceButtonOnPress.bind(this);
-    this._exitViro = this._exitViro.bind(this);
+  }
+
+  onLoadComplete(data) {
+    setActiveExperienceData(data);
+    this.setState({ 
+      activeCampaignId: data.id, 
+      navigatorType: 'AR'
+     });
+  }
+
+  onChooseCampaign(id) {
+    this.setState({ activeCampaignId: id, navigatorType: 'LOADING' });
+  }
+
+  onChooseCampaignList(optionalArg) {
+    this.setState({ navigatorType: "LIST"});
   }
 
   // Replace this function with the contents of _getVRNavigator() or _getARNavigator()
   // if you are building a specific type of experience.
   render() {
-    if (this.state.navigatorType == UNSET) {
-      return this._getExperienceSelector();
-    } else if (this.state.navigatorType == AR_NAVIGATOR_TYPE) {
-      return this._getARNavigator();
+    backhandler = null;
+
+    if (this.state.navigatorType == "SPLASH") {
+    return ( <Splash onChooseCampaignList={(optionalArg) => {this.onChooseCampaignList(optionalArg)}}/>)
     }
-  }
-
-  // Presents the user with a choice of an AR or VR experience
-  _getExperienceSelector() {
-    return (
-      <View style={localStyles.outer} >
-        <View style={localStyles.inner} >
-
-          <Text style={localStyles.titleText}>
-            Choose your desired experience:
-          </Text>
-
-          <Text style={localStyles.titleText}>
-            {this.state.testMessage}
-          </Text>
-
-          <TouchableHighlight style={localStyles.buttons}
-            onPress={this._getExperienceButtonOnPress(AR_NAVIGATOR_TYPE)}
-            underlayColor={'#68a0ff'} >
-
-            <Text style={localStyles.buttonText}>AR</Text>
-          </TouchableHighlight>
-
-          <TouchableHighlight style={localStyles.buttons}
-            onPress={this._getExperienceButtonOnPress(AXIOS_TEST)}
-            underlayColor={'#68a0ff'} >
-
-            <Text style={localStyles.buttonText}>Test Axios</Text>
-          </TouchableHighlight>
+    if (this.state.navigatorType == "LIST") {
+      return (
+        <CampaignList 
+          onChooseCampaign={(id) => {this.onChooseCampaign(id)}}
+          />
+      );
+    } else if (this.state.navigatorType == 'LOADING') {
+      return (
+        <LoadArInfoScreen 
+          campaignId={this.state.activeCampaignId} 
+          onLoadComplete={(data) => {this.onLoadComplete(data)}}
+          />
+      );
+    } else if (this.state.navigatorType == 'AR') {
+        backhandler = () => { this.onChooseCampaignList()};
+        
+      return (
+        <View style={{flex: 1, flexDirection: "column"}}>
+          <View style={localStyles.header}>
+           <Image style={localStyles.titleHeader}source={require('./icons/header-maybe.png')}></Image>
+              <BackButton onChooseCampaignList={() => this.onChooseCampaignList()}>
+              </BackButton>
+          </View>
+          <View style={{flex: 1}}>
+            <ViroARSceneNavigator apiKey={VIRO_API_KEY}
+              initialScene={{scene: InitialARScene}} />
+          </View>
         </View>
-      </View>
-    );
-  }
-
-  // Returns the ViroARSceneNavigator which will start the AR experience
-  _getARNavigator() {
-    return (
-      <ViroARSceneNavigator {...this.state.sharedProps}
-        initialScene={{scene: InitialARScene}} />
-    );
-  }
-  
-  // Returns the ViroSceneNavigator which will start the VR experience
-  _getVRNavigator() {
-    return (
-      <ViroVRSceneNavigator {...this.state.sharedProps}
-        initialScene={{scene: InitialVRScene}} onExitViro={this._exitViro}/>
-    );
-  }
-
-  // This function returns an anonymous/lambda function to be used
-  // by the experience selector buttons
-  _getExperienceButtonOnPress(navigatorType) {
-    return () => {
-      if (navigatorType == AXIOS_TEST) {
-        axios({
-          method: 'post',
-          url: 'http://catsforgold.com',
-          data: {
-            test: "Just testing axios",
-          }
-        }).then(response => {
-          let randomText = response.data.split('<title>')[1].split('</title>')[0];
-          this.setState({ testMessage: randomText });
-        });
-      } else {
-        this.setState({
-          navigatorType : navigatorType
-        });
-      }
+      );
+    } else {
+      return (<Text>Invalid navigator type</Text>);
     }
-  }
-
-  // This function "exits" Viro by setting the navigatorType to UNSET.
-  _exitViro() {
-    this.setState({
-      navigatorType : UNSET
-    })
   }
 }
 
 var localStyles = StyleSheet.create({
-  viroContainer :{
-    flex : 1,
-    backgroundColor: "black",
-  },
-  outer : {
-    flex : 1,
-    flexDirection: 'row',
-    alignItems:'center',
-    backgroundColor: "black",
-  },
-  inner: {
-    flex : 1,
-    flexDirection: 'column',
-    alignItems:'center',
-    backgroundColor: "black",
-  },
-  titleText: {
-    paddingTop: 30,
-    paddingBottom: 20,
-    color:'#fff',
-    textAlign:'center',
-    fontSize : 25
-  },
-  buttonText: {
-    color:'#fff',
-    textAlign:'center',
-    fontSize : 20
-  },
-  buttons : {
-    height: 80,
-    width: 150,
-    paddingTop:20,
-    paddingBottom:20,
-    marginTop: 10,
-    marginBottom: 10,
-    backgroundColor:'#68a0cf',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#fff',
-  },
-  exitButton : {
+  header: {
+    backgroundColor: 'white',
     height: 50,
-    width: 100,
-    paddingTop:10,
-    paddingBottom:10,
-    marginTop: 10,
-    marginBottom: 10,
-    backgroundColor:'#68a0cf',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#fff',
-  }
+    shadowColor: '#1e1a75',
+    shadowOffset: { width: 5, height: 5 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 2,
+  },
+  titleHeader: {
+    alignSelf: 'center',
+    height: 50,
+    width: 275
+  },
+
 });
 
 module.exports = ViroSample
