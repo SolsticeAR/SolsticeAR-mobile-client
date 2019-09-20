@@ -26,10 +26,10 @@ export default class CornerMenu extends Component {
               () => { this.props.setSortMode('all') },
               () => { this.props.setSortMode('top10') },
               () => { this.props.setSortMode('new') },
-              () => { this.props.setFilterType('image')},
-              () => { this.props.setFilterType('animatedImage')},
-              () => { this.props.setFilterType('video')},
-              () => { this.props.setFilterType('text')},
+              () => { this.props.setSortMode('image')},
+              () => { this.props.setSortMode('animatedImage')},
+              () => { this.props.setSortMode('video')},
+              () => { this.props.setSortMode('text')},
               () => { this.setState({ isSearchByIdVisible: true })},
             ]}/>
         <DialogInput 

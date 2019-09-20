@@ -6,15 +6,10 @@ import {
 } from 'react-native-dotenv';
 
 let activeSortMode = 'all';
-let activeFilterType = 'all';
 
  
 const setActiveSortMode = function(mode) {
   activeSortMode = mode;
-}
-
-const setActiveFilterType = function(type) {
-  activeFilterType = type;
 }
 
 const sendHttpRequest = function(url, requestBody) {
@@ -199,31 +194,25 @@ function listCampaigns() {
           campaigns = sortByKey(campaigns, c => -c.id);
           break;
         
-        case 'all':
-        default:
-          break;
-      }
-
-      switch (activeFilterType) {
         case 'image': 
-        campaigns = campaigns.filter( c => c.type === 'image');
-        break;
+          campaigns = campaigns.filter( c => c.type === 'image');
+          break;
 
         case 'animatedImage': 
-        campaigns = campaigns.filter( c => c.type === 'animatedImage');
-        break;
+          campaigns = campaigns.filter( c => c.type === 'animatedImage');
+          break;
 
         case 'video': 
-        campaigns = campaigns.filter( c => c.type === 'video');
-        break;
+          campaigns = campaigns.filter( c => c.type === 'video');
+          break;
 
         case 'text': 
-        campaigns = campaigns.filter( c => c.type === 'text');
-        break;
+          campaigns = campaigns.filter( c => c.type === 'text');
+          break;
+        
         case 'all':
         default:
           break;
-          
       }
 
       response.data.campaigns = campaigns;
@@ -246,5 +235,4 @@ module.exports = {
     listCampaigns,
     getCampaign,
     setActiveSortMode,
-    setActiveFilterType
 };

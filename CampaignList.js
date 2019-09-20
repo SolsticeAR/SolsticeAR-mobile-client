@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { listCampaigns, setActiveSortMode, setActiveFilterType } from './serverMessages.js';
+import { listCampaigns, setActiveSortMode } from './serverMessages.js';
 
 import { ActivityIndicator, View, Text, FlatList, StyleSheet, TouchableHighlight, Image} from 'react-native';
 
@@ -48,11 +48,6 @@ export default class CampaignList extends Component {
     this.loadCampaigns();
   }
 
-  setFilterType(type) {
-    setActiveFilterType(type);
-    this.loadCampaigns();
-  }
-
   render() {
     return (
       <View style={{flex: 1, flexDirection: "column"}}>
@@ -60,8 +55,7 @@ export default class CampaignList extends Component {
           <Image style={localStyles.titleHeader}source={require('./icons/header-maybe.png')}></Image>
           <CornerMenu 
               setSortMode={(mode) => {this.setSortMode(mode)}}
-              onCampaignPress={(id) => { this.onCampaignPress(id);}}
-              setFilterType={(type) => {this.setFilterType(type)}}/>
+              onCampaignPress={(id) => { this.onCampaignPress(id);}}/>
         </View>
         <View style={{flex: 1}}>
           {(this.state.isLoaded ? (

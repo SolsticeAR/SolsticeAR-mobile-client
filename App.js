@@ -26,6 +26,7 @@ import { VIRO_API_KEY } from 'react-native-dotenv';
 import CampaignList from './CampaignList.js';
 import LoadArInfoScreen from './LoadArInfoScreen.js';
 import Splash from './Splash.js';
+import BackButton from './BackButton.js';
 
 import { setActiveExperienceData } from "./globalExperience.js";
 
@@ -95,9 +96,11 @@ export default class ViroSample extends Component {
         
       return (
         <View style={{flex: 1, flexDirection: "column"}}>
-            <TouchableHighlight onPress={() => {this.onChooseCampaignList()}} style={localStyles.header}>
-              <Image source={require('./icons/home-button-200x200.png')} style={localStyles.icon}/>
-            </TouchableHighlight>
+          <View style={localStyles.header}>
+           <Image style={localStyles.titleHeader}source={require('./icons/header-maybe.png')}></Image>
+              <BackButton onChooseCampaignList={() => this.onChooseCampaignList()}>
+              </BackButton>
+          </View>
           <View style={{flex: 1}}>
             <ViroARSceneNavigator apiKey={VIRO_API_KEY}
               initialScene={{scene: InitialARScene}} />
@@ -111,7 +114,7 @@ export default class ViroSample extends Component {
 }
 
 var localStyles = StyleSheet.create({
-  header :{
+  header: {
     backgroundColor: 'white',
     height: 50,
     shadowColor: '#1e1a75',
@@ -119,14 +122,13 @@ var localStyles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 8,
     elevation: 2,
-    marginBottom: 2,
   },
-  icon: {
-  position: "absolute",
-  right: 0, 
-  height: 50,
-  width: 50.
-  }
+  titleHeader: {
+    alignSelf: 'center',
+    height: 50,
+    width: 275
+  },
+
 });
 
 module.exports = ViroSample
