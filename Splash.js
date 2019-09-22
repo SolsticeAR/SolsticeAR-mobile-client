@@ -31,7 +31,7 @@ export default class Splash extends Component {
               </TouchableHighlight>
             </View>
             <View>
-            <Text style={localStyles.splashDescription} onPress={ ()=> Linking.openURL('https://solstice-splash.herokuapp.com') } >Create Experiences</Text>
+            <Text style={localStyles.splashDescription} onPress={ ()=> Linking.openURL('https://solstice-splash.herokuapp.com/#login') } >Create Experiences</Text>
             </View>
           </View>
         </Modal>
