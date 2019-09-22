@@ -69,7 +69,7 @@ const localStyles = StyleSheet.create({
     width: 200,
     height: 200,
     position: 'absolute',
-    top: 200,
+    top: 100,
     shadowColor: '#7b4397',
     shadowOffset: { width: 5, height: 5 },
     shadowOpacity: 0.5,
