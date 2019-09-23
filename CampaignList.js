@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { listCampaigns, setActiveSortMode } from './serverMessages.js';
 
-import { ActivityIndicator, View, Text, FlatList, StyleSheet, TouchableHighlight, Image} from 'react-native';
+import { ActivityIndicator, View, Text, FlatList, StyleSheet, TouchableHighlight, Image, RefreshControl} from 'react-native';
 
 import CornerMenu from './CornerMenu.js';
 
@@ -13,6 +13,7 @@ export default class CampaignList extends Component {
     this.state = {
       message: "",
       isLoaded: false,
+      isRefreshing: false,
       campaigns: [],
     };
   }
@@ -26,12 +27,18 @@ export default class CampaignList extends Component {
       this.setState({
         isLoaded: true, 
         message: "Loaded.",
+        isRefreshing: false,
         campaigns: response.data.campaigns });
     });
   }
 
   onCampaignPress(id) {
     this.props.onChooseCampaign(id);
+  }
+
+  onRefresh() {
+    this.setState({isRefreshing: true});
+    this.loadCampaigns();
   }
 
   switchItems(item) {
@@ -74,6 +81,8 @@ export default class CampaignList extends Component {
                     
                   </TouchableHighlight>)}
                 keyExtractor={item => ('' + item.id)}
+                refreshing={this.state.isRefreshing}
+                onRefresh={ () => { this.onRefresh() }}
               />
           ) : (
             <ActivityIndicator style={{margin:50}} size="large" color="#800080"/>
