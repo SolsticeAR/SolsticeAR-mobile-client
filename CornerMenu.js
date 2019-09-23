@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableHighlight, Image} from 'react-native';
+import { View, Linking } from 'react-native';
 import OptionsMenu from 'react-native-options-menu';
 import DialogInput from 'react-native-dialog-input';
 
@@ -21,8 +21,9 @@ export default class CornerMenu extends Component {
             style={{margin:10}}
             button={require('./icons/hamburger_menu.png')}
             buttonStyle={{width: 30, height: 30, resizeMode: 'contain'}}
-            options={["Show All", "Show Top 10", "Show Newest", "Show Images", "Show Animations", "Show Videos", "Show Text", "Search by ID#"]}
+            options={["Create Experiences", "Show All", "Show Top 10", "Show Newest", "Show Images", "Show Animations", "Show Videos", "Show Text", "Search by ID#"]}
             actions={[
+              () => {Linking.openURL('https://solstice-splash.herokuapp.com/#login')},
               () => { this.props.setSortMode('all') },
               () => { this.props.setSortMode('top10') },
               () => { this.props.setSortMode('new') },
