@@ -13,6 +13,7 @@ import {
   ViroText,
   ViroVideo,
   ViroConstants,
+  ViroSpinner
 } from 'react-viro';
 
 export default class ARScene extends Component {
@@ -37,8 +38,10 @@ export default class ARScene extends Component {
       case "initialising":
         return (
           <ViroARScene onTrackingUpdated={this._onInitialized} >
-          <ViroText text={"Initialising..."} scale={[.5, .5, .5]} position={[0, 0, -1]} style={styles.helloWorldTextStyle} />
-          <ViroText text={"Initialising..."} scale={[.5, .5, .5]} rotation={[0, 180, 0]} position={[0, 0, -1]} style={styles.helloWorldTextStyle} />
+             <ViroSpinner 
+              type="Dark"
+              position={[0, 0, -2]}
+              /> 
         </ViroARScene>
         );
       case "image": 
