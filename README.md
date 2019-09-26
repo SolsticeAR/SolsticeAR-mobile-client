@@ -2,6 +2,7 @@
 
 SolsticeAR Mobile Viewer
 
+
 # .env configuration
 
 Before building/running SolsticeAR mobile client, create a .env file that looks like this:
