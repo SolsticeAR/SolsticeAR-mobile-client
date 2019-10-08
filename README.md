@@ -1,12 +1,17 @@
 <img src="./icons/solstice-splash.png" align="right"
      title="Solstice AR Logo" width="120" height="120">
 
+## About
+SolsticeAR is an open source AR media sharing platform. Please learn more at www.solsticear.com
+
+This repo is hosting the source code for the AR Experience Mobile App (It's also available for download on [Google Play.](https://play.google.com/store/apps/details?id=com.solsticear) For access to the [landing page](https://github.com/SolsticeAR/solsticeAR-landing-page), the React/Redux web [dashboard](https://github.com/SolsticeAR/solsticeAR-admin-client) or the Node.js/GraphQL/PostgreSQL [backend](https://github.com/SolsticeAR/solsticeAR-server) please visit https://github.com/SolsticeAR. 
+
 # SolsticeAR mobile client
 
 
 
 SolsticeAR Mobile Viewer
-A platform that allows users to both create and enjoy unique augmented reality experiences. Learn more at solsticear.com (heroku might be sleepy, so give it a second if it doesn't load right away!)
+A platform that allows users to both create and enjoy unique augmented reality experiences.
 
 # .env configuration
 
