@@ -6,7 +6,7 @@
 
 
 SolsticeAR Mobile Viewer
-A platform that allows users to both create and enjoy unique augmented reality experiences.
+A platform that allows users to both create and enjoy unique augmented reality experiences. Learn more at solsticear.com (heroku might be sleepy, so give it a second if it doesn't load right away!)
 
 # .env configuration
 
